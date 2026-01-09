@@ -1,0 +1,49 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CountTool = exports.CountArgs = void 0;
+const mongodbTool_js_1 = require("../mongodbTool.js");
+const indexCheck_js_1 = require("../../../helpers/indexCheck.js");
+const args_js_1 = require("../../args.js");
+exports.CountArgs = {
+    query: (0, args_js_1.zEJSON)()
+        .optional()
+        .describe("A filter/query parameter. Allows users to filter the documents to count. Matches the syntax of the filter argument of db.collection.count()."),
+};
+class CountTool extends mongodbTool_js_1.MongoDBToolBase {
+    constructor() {
+        super(...arguments);
+        this.name = "count";
+        this.description = "Gets the number of documents in a MongoDB collection using db.collection.count() and query as an optional filter parameter";
+        this.argsShape = {
+            ...mongodbTool_js_1.DbOperationArgs,
+            ...exports.CountArgs,
+        };
+    }
+    async execute({ database, collection, query }) {
+        const provider = await this.ensureConnected();
+        // Check if count operation uses an index if enabled
+        if (this.config.indexCheck) {
+            await (0, indexCheck_js_1.checkIndexUsage)(provider, database, collection, "count", async () => {
+                return provider.runCommandWithCheck(database, {
+                    explain: {
+                        count: collection,
+                        query,
+                    },
+                    verbosity: "queryPlanner",
+                });
+            });
+        }
+        const count = await provider.count(database, collection, query);
+        return {
+            content: [
+                {
+                    text: `Found ${count} documents in the collection "${collection}"`,
+                    type: "text",
+                },
+            ],
+        };
+    }
+}
+exports.CountTool = CountTool;
+CountTool.operationType = "read";
+//# sourceMappingURL=count.js.map
