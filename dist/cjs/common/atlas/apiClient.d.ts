@@ -7,7 +7,11 @@ export interface ApiClientOptions {
     baseUrl: string;
     userAgent?: string;
     credentials?: Credentials;
+    requestContext?: RequestContext;
 }
+type RequestContext = {
+    headers?: Record<string, string | string[] | undefined>;
+};
 export type ApiClientFactoryFn = (options: ApiClientOptions, logger: LoggerBase) => ApiClient;
 export declare const createAtlasApiClient: ApiClientFactoryFn;
 export declare class ApiClient {
@@ -239,4 +243,5 @@ export declare class ApiClient {
         readonly totalCount?: number;
     }>;
 }
+export {};
 //# sourceMappingURL=apiClient.d.ts.map

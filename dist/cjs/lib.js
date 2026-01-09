@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.applyConfigOverrides = exports.Elicitation = exports.registerGlobalSecretToRedact = exports.Keychain = exports.Telemetry = exports.MongoDBError = exports.ErrorCodes = exports.connectionErrorHandler = exports.createMCPConnectionManager = exports.ConnectionStateConnected = exports.ConnectionManager = exports.TransportRunnerBase = exports.StdioRunner = exports.StreamableHttpRunner = exports.LoggerBase = exports.defaultParserOptions = exports.parseUserConfig = exports.UserConfigSchema = exports.Session = exports.Server = void 0;
+exports.ApiClient = exports.applyConfigOverrides = exports.Elicitation = exports.registerGlobalSecretToRedact = exports.Keychain = exports.Telemetry = exports.MongoDBError = exports.ErrorCodes = exports.connectionErrorHandler = exports.createMCPConnectionManager = exports.ConnectionStateConnected = exports.ConnectionManager = exports.TransportRunnerBase = exports.StdioRunner = exports.StreamableHttpRunner = exports.LoggerBase = exports.defaultParserOptions = exports.parseUserConfig = exports.UserConfigSchema = exports.Session = exports.Server = void 0;
 exports.parseArgsWithCliOptions = parseArgsWithCliOptions;
 var server_js_1 = require("./server.js");
 Object.defineProperty(exports, "Server", { enumerable: true, get: function () { return server_js_1.Server; } });
@@ -44,4 +44,6 @@ var elicitation_js_1 = require("./elicitation.js");
 Object.defineProperty(exports, "Elicitation", { enumerable: true, get: function () { return elicitation_js_1.Elicitation; } });
 var configOverrides_js_1 = require("./common/config/configOverrides.js");
 Object.defineProperty(exports, "applyConfigOverrides", { enumerable: true, get: function () { return configOverrides_js_1.applyConfigOverrides; } });
+var apiClient_js_1 = require("./common/atlas/apiClient.js");
+Object.defineProperty(exports, "ApiClient", { enumerable: true, get: function () { return apiClient_js_1.ApiClient; } });
 //# sourceMappingURL=lib.js.map

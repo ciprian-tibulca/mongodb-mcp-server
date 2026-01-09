@@ -20,4 +20,5 @@ export { Telemetry } from "./telemetry/telemetry.js";
 export { Keychain, registerGlobalSecretToRedact } from "./common/keychain.js";
 export { Elicitation } from "./elicitation.js";
 export { applyConfigOverrides } from "./common/config/configOverrides.js";
+export { ApiClient } from "./common/atlas/apiClient.js";
 //# sourceMappingURL=lib.js.map

@@ -65,6 +65,7 @@ export class TransportRunnerBase {
                 clientId: userConfig.apiClientId,
                 clientSecret: userConfig.apiClientSecret,
             },
+            requestContext: request,
         }, logger);
         const session = new Session({
             userConfig,
