@@ -86,6 +86,8 @@ describeWithAtlas("clusters", (integration) => {
                 expect(createDevCluster.inputSchema.properties).toHaveProperty("projectId");
                 expect(createDevCluster.inputSchema.properties).toHaveProperty("name");
                 expect(createDevCluster.inputSchema.properties).toHaveProperty("region");
+                expect(createDevCluster.inputSchema.properties).toHaveProperty("instanceSize");
+                expect(createDevCluster.inputSchema.properties).toHaveProperty("backupEnabled");
             });
 
             it("should create a dev cluster and add current IP to access list", async () => {
