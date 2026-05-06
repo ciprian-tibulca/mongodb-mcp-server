@@ -39,10 +39,13 @@ export class CreateProdClusterTool extends AtlasToolBase {
     static toolName = "atlas-create-prod-cluster";
     public description =
         "Create a dedicated M30+ production MongoDB Atlas cluster on AWS. " +
+        "Use this tool for: production workloads, high-availability (HA) deployments, multi-region disaster recovery, " +
+        "or any cluster that must survive a full regional outage with automatic failover and zero manual intervention. " +
         "Supports two topologies: single-region (omit `regions`) and multi-region (provide `regions` with 3+ AWS regions). " +
         "Single-region: US_EAST_1 only, backup required, no analytics/read-only nodes. " +
-        "Multi-region: US_EAST_1 required as primary, ≥3 regions with electable nodes, ≥5 total electable nodes, backup required. " +
-        "Compute and disk autoscaling enabled (M30–M80). Termination protection enabled. " +
+        "Multi-region (HA): US_EAST_1 required as primary, ≥3 regions with electable nodes, ≥5 total electable nodes, backup required; " +
+        "survives complete loss of the primary region with no manual intervention. " +
+        "Compute and disk autoscaling enabled (M30–M80) to absorb traffic spikes. Termination protection enabled. " +
         "Both flows verify the project exists and pause the cluster after creation. " +
         "AWS only. For development workloads, use `atlas-create-dev-cluster` (M10/M20).";
     static operationType: OperationType = "create";
