@@ -65,6 +65,57 @@ describeWithAtlas("clusters", (integration) => {
             });
         });
 
+        describe("atlas-create-dev-cluster", () => {
+            const devClusterName = "DevClusterTest-" + randomId();
+
+            afterAll(async () => {
+                const projectId = getProjectId();
+                if (projectId) {
+                    const session: Session = integration.mcpServer().session;
+                    await deleteCluster(session, projectId, devClusterName);
+                }
+            });
+
+            it("should have correct metadata", async () => {
+                const { tools } = await integration.mcpClient().listTools();
+                const createDevCluster = tools.find((tool) => tool.name === "atlas-create-dev-cluster");
+
+                expectDefined(createDevCluster);
+                expect(createDevCluster.inputSchema.type).toBe("object");
+                expectDefined(createDevCluster.inputSchema.properties);
+                expect(createDevCluster.inputSchema.properties).toHaveProperty("projectId");
+                expect(createDevCluster.inputSchema.properties).toHaveProperty("name");
+                expect(createDevCluster.inputSchema.properties).toHaveProperty("region");
+            });
+
+            it("should create a dev cluster and add current IP to access list", async () => {
+                const projectId = getProjectId();
+                const session = integration.mcpServer().session;
+
+                const response = await integration.mcpClient().callTool({
+                    name: "atlas-create-dev-cluster",
+                    arguments: {
+                        projectId,
+                        name: devClusterName,
+                        region: "US_EAST_1",
+                    },
+                });
+                const content = getResponseContent(response.content);
+                expect(content).toContain("Cluster");
+                expect(content).toContain(devClusterName);
+                expect(content).toContain("has been created");
+                expect(content).toContain("US_EAST_1");
+                expect(content).toContain("M10");
+
+                assertApiClientIsAvailable(session);
+                const accessList = await session.apiClient.listAccessListEntries({
+                    params: { path: { groupId: projectId } },
+                });
+                const found = accessList.results?.some((entry) => entry.ipAddress === getIpAddress());
+                expect(found).toBe(true);
+            });
+        });
+
         describe("atlas-inspect-cluster", () => {
             it("should have correct metadata", async () => {
                 const { tools } = await integration.mcpClient().listTools();
