@@ -306,10 +306,19 @@ export class CreateProdClusterTool extends AtlasToolBase {
             params: { path: { groupId: projectId } },
             body: input,
         });
-        await this.apiClient.updateCluster({
-            params: { path: { groupId: projectId, clusterName: name } },
-            body: { paused: true },
-        });
+
+        let pauseNote: string;
+        try {
+            await this.apiClient.updateCluster({
+                params: { path: { groupId: projectId, clusterName: name } },
+                body: { paused: true },
+            });
+            pauseNote = "The cluster is paused. Resume it in the Atlas UI or via the API when ready to use.";
+        } catch {
+            pauseNote =
+                "A pause request was issued but the cluster must reach IDLE state first. " +
+                "Pause it via the Atlas UI or API once it is ready.";
+        }
 
         const topologyLine = isMultiRegion
             ? `Cluster "${name}" (${instanceSize}, AWS, ${regions.length} regions) has been created across: ` +
@@ -324,10 +333,7 @@ export class CreateProdClusterTool extends AtlasToolBase {
                     type: "text",
                     text: `Compute and disk autoscaling are enabled (M30–M80). Backups are enabled. Termination protection is enabled.`,
                 },
-                {
-                    type: "text",
-                    text: `The cluster is paused. Resume it in the Atlas UI or via the API when ready to use.`,
-                },
+                { type: "text", text: pauseNote },
                 ...warnings.map((w) => ({ type: "text" as const, text: `Warning: ${w}` })),
                 { type: "text", text: `Double check your access lists to enable your current IP.` },
             ],
