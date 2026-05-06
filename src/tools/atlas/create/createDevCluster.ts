@@ -25,11 +25,12 @@ type ConfigValidationParams = {
 export class CreateDevClusterTool extends AtlasToolBase {
     static toolName = "atlas-create-dev-cluster";
     public description =
-        "Create a dedicated M10 MongoDB Atlas cluster on AWS with compute and disk autoscaling enabled. " +
-        "Preferred default for 'dev cluster', 'development', 'dedicated', or 'prototype' workloads that outgrow a free M0 tier. " +
+        "Create the lowest-cost dedicated MongoDB Atlas cluster with autoscaling enabled — an M10 on AWS. " +
+        "Preferred default for 'dev cluster', 'development', 'prototype', or any workload that needs autoscaling at minimum cost. " +
+        "Compute and disk autoscaling enabled; scales up to M40 automatically. No backups by default. " +
         "Single-region, AWS only (GCP and Azure are not supported by this tool). " +
-        "Incurs real cloud costs — compute autoscaling may scale up to M40. No backups by default. " +
-        "For a free ephemeral M0 sandbox with no cost, use `atlas-create-free-cluster` instead.";
+        "For a completely free sandbox with no autoscaling, use `atlas-create-free-cluster` instead. " +
+        "For production workloads requiring M30+ instances, use `atlas-create-prod-cluster` instead.";
     static operationType: OperationType = "create";
     public argsShape = {
         projectId: AtlasArgs.projectId().describe("Atlas project ID to create the cluster in"),
