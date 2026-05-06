@@ -366,6 +366,22 @@ export class ApiClient {
         return data;
     }
 
+    async updateCluster(options: {
+        params: { path: { groupId: string; clusterName: string } };
+        body: Partial<components["schemas"]["ClusterDescription20240805"]>;
+    }): Promise<components["schemas"]["ClusterDescription20240805"]> {
+        // The PATCH path is in the Atlas API but not in the generated openapi types for this project.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data, error, response } = await (this.client as any).PATCH(
+            "/api/atlas/v2/groups/{groupId}/clusters/{clusterName}",
+            options
+        );
+        if (error) {
+            throw ApiClientError.fromError(response, error);
+        }
+        return data as components["schemas"]["ClusterDescription20240805"];
+    }
+
     async listDropIndexSuggestions(
         options: FetchOptions<operations["listGroupClusterPerformanceAdvisorDropIndexSuggestions"]>
     ): Promise<components["schemas"]["DropIndexSuggestionsResponse"]> {

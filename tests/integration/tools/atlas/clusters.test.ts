@@ -118,6 +118,23 @@ describeWithAtlas("clusters", (integration) => {
             });
         });
 
+        describe("atlas-create-prod-cluster", () => {
+            it("should have correct metadata", async () => {
+                const { tools } = await integration.mcpClient().listTools();
+                const createProdCluster = tools.find((tool) => tool.name === "atlas-create-prod-cluster");
+
+                expectDefined(createProdCluster);
+                expect(createProdCluster.inputSchema.type).toBe("object");
+                expectDefined(createProdCluster.inputSchema.properties);
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("projectId");
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("name");
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("instanceSize");
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("backupEnabled");
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("region");
+                expect(createProdCluster.inputSchema.properties).toHaveProperty("regions");
+            });
+        });
+
         describe("atlas-inspect-cluster", () => {
             it("should have correct metadata", async () => {
                 const { tools } = await integration.mcpClient().listTools();
